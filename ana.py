@@ -1,13 +1,13 @@
 import math
 from datetime import datetime
 
-# f_id = open('New_Delhi_Marathon_3_49_57.gpx')
-f_id = open('test_data/468566574247215117.gpx')
+f_id = open('test_data/468659183674228748.gpx')
 
 latitude_vector = []
 longitude_vector = []
 time_vector = []
 ele_vector=[]
+date_vector=[]
 
 for line in f_id:
     if len(line) > 3:
@@ -24,6 +24,8 @@ for line in f_id:
             time_str = c_newline.strip().split("<time>")[1].split("</time>")[0]
             timestamp = datetime.strptime(time_str, "%Y-%m-%dT%H:%M:%SZ")
             time_vector.append(timestamp)
+            date_vector = timestamp.date().isoformat()
+        
 
 # haversine distance function
 def haversine(lat1, lon1, lat2, lon2):
@@ -52,6 +54,7 @@ if total_distance > 0:
     pace_sec = int((pace_min_per_km - pace_min) * 60)
     speed_kmh = total_distance / (total_time_minutes / 60.0)
 
+    print(f"Date of activity: {date_vector}")
     print(f"Total distance: {total_distance:.2f} km")
     print(f"Total time: {total_time_minutes:.1f} minutes")
     print(f"Pace: {pace_min}:{pace_sec:02d} min/km")
