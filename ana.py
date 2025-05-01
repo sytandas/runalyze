@@ -1,7 +1,8 @@
 import math
 from datetime import datetime
 
-f_id = open('25k_run.gpx')
+# f_id = open('New_Delhi_Marathon_3_49_57.gpx')
+f_id = open('test_data/468566574247215117.gpx')
 
 latitude_vector = []
 longitude_vector = []
@@ -54,4 +55,5 @@ if total_distance > 0:
     print(f"Total distance: {total_distance:.2f} km")
     print(f"Total time: {total_time_minutes:.1f} minutes")
     print(f"Pace: {pace_min}:{pace_sec:02d} min/km")
+    print(f"Speed: {speed_kmh:.2f} km/h")
 
