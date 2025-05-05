@@ -49,7 +49,7 @@ with open(output_file, 'w', newline='') as csvfile:
             time_el = tp.find('tcx:Time', ns)
             if time_el is None:
                 continue
-            current_time = datetime.fromisoformat(time_el.text.replace('Z', '+00:00'))
+            current_time = datetime.fromisoformat(time_el.text.replace('Z', '+05:30'))
             time_vector.append(current_time)
 
             dist_el = tp.find('tcx:DistanceMeters', ns)
@@ -64,6 +64,10 @@ with open(output_file, 'w', newline='') as csvfile:
             cad = int(cad_el.text)*2 if cad_el is not None else None
             cadence_vector.append(cad)
 
+            # Skip if time or distance did not increase - new correction *********************
+            if prev_time is not None and current_time <= prev_time:
+                continue
+            # end **************************
             if prev_time is not None and prev_distance is not None and dist is not None:
                 delta_t = (current_time - prev_time).total_seconds() / 60.0
                 delta_d = (dist - prev_distance) / 1000.0
@@ -73,11 +77,32 @@ with open(output_file, 'w', newline='') as csvfile:
                         pace_vector.append(pace)
 
             prev_time = current_time
+            # new correction *********************
+            if prev_distance is not None and dist is not None and dist <= prev_distance:
+                continue
+            # end ***********************
             prev_distance = dist
 
         if not time_vector or not distance_vector:
             continue
 
+        # sanity check if works - start ******************************
+        delta_t = (current_time - prev_time).total_seconds()
+        # delta_d = (dist - prev_distance)
+        if dist is not None and prev_distance is not None:
+            delta_d = dist - prev_distance
+        else:
+            delta_d = None  # or some default, like 0, depending on your use case
+
+
+        # Skip large gaps or zero movement
+        if delta_t <= 0 or delta_d <= 0 or delta_t > 120 or delta_d > 500:
+            pace_vector.append(None)
+        else:
+            pace = (delta_t / 60.0) / (delta_d / 1000.0)
+            pace_vector.append(pace)
+        # sanity check if works - end *************************
+        
         total_distance_km = (distance_vector[-1] if distance_vector[-1] else 0) / 1000
         total_time_min = (time_vector[-1] - time_vector[0]).total_seconds() / 60.0
         # Cleaned lists (excluding None)
@@ -87,10 +112,12 @@ with open(output_file, 'w', newline='') as csvfile:
         # Safe averaging
         avg_hr = np.mean(clean_hr) if clean_hr else None
         avg_cad = np.mean(clean_cad) if clean_cad else None
-        # avg_hr = np.mean([h for h in heart_rate_vector if h is not None]) if heart_rate_vector else None
-        # avg_cad = np.mean([c for c in cadence_vector if c is not None]) if cadence_vector else None
-        avg_pace = np.mean(pace_vector) if pace_vector else None
-        activity_date = time_vector[0].date()
+        # avg_pace = np.mean(pace_vector) if pace_vector else None
+        # new - start ******************************
+        cleaned_pace_vector = [p for p in pace_vector if p is not None]
+        avg_pace = np.mean(cleaned_pace_vector) if cleaned_pace_vector else None
+        # new - end ******************************
+        activity_date = time_vector[0].date() 
 
         writer.writerow([
             filename,
@@ -102,3 +129,5 @@ with open(output_file, 'w', newline='') as csvfile:
             f"{avg_hr:.0f}" if avg_hr else "",
             f"{avg_cad:.0f}" if avg_cad else ""
         ])
+
+print('Done')
