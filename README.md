@@ -1,3 +1,5 @@
-Sanity simple analyzer to focus on what data is needed to improve running. 
-Analyzing own tcx file from coros.
-.tcx file heartrate zone calculation.
+# Run analyzing tool.
+Using .tcx file from (garmin/coros) wearables analyze data to improve running.
+
+## Todo:
+Analyze own data for self coaching or simple analysis.
