@@ -59,4 +59,3 @@ if total_distance > 0:
     print(f"Total time: {total_time_minutes:.1f} minutes")
     print(f"Pace: {pace_min}:{pace_sec:02d} min/km")
     print(f"Speed: {speed_kmh:.2f} km/h")
-
