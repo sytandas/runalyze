@@ -6,3 +6,4 @@ Currently used .tcx file from (garmin/coros) wearables to analyze data to improv
 1. Evaluate easy, threshold pace from overall data (found out the least amount of data needed to do relatively correctly).
 2. Mileage load.
 3. Training improvement overtime.
+4. Training load/effect.
