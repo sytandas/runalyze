@@ -7,3 +7,5 @@ Currently used .tcx file from (garmin/coros) wearables to analyze data to improv
 2. Mileage load.
 3. Training improvement overtime.
 4. Training load/effect.
+
+Work on 6th
