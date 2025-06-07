@@ -96,6 +96,10 @@ def file_extract(x):
     print(f"Average cadence: {avg_cad:.0f} spm" if avg_cad else "Cadence: N/A")
 
 
-file_extract(tree_1)
+data_1 = file_extract(tree_1)
 print(" ")
-file_extract(tree_2)
+data_2= file_extract(tree_2)
+
+# TODO: Implementation of dynamic time warping (DTW) to compare two runs changing fintess mesures. 
+def dtw(data_1, data_2):
+    return 
