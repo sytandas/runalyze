@@ -1,61 +1,101 @@
 import math
 from datetime import datetime
+import xml.etree.ElementTree as ET
+import numpy as np
 
-f_id = open('test_data/468659183674228748.gpx')
+# Load the TCX file
+tree_1 = ET.parse('test_data/8K-7-june-25.tcx').getroot()
+tree_2 = ET.parse('test_data/8K-27-june-24.tcx').getroot()
 
-latitude_vector = []
-longitude_vector = []
-time_vector = []
-ele_vector=[]
-date_vector=[]
+# TCX files use a default namespace
+ns = {'tcx': 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2'}
 
-for line in f_id:
-    if len(line) > 3:
-        c_space = line.replace(" ","")
-        c_newline = c_space.replace("\n","")
-        if "<trkpt" in c_newline:
-            row = c_newline.split('"')
-            lat = float(row[1])
-            lon = float(row[3])
-            latitude_vector.append(lat)
-            longitude_vector.append(lon)
-        
-        if "<time>" in c_newline:
-            time_str = c_newline.strip().split("<time>")[1].split("</time>")[0]
-            timestamp = datetime.strptime(time_str, "%Y-%m-%dT%H:%M:%SZ")
-            time_vector.append(timestamp)
-            date_vector = timestamp.date().isoformat()
-        
+def file_extract(x):
+    latitude_vector = []
+    longitude_vector = []
+    distance_vector = []
+    heart_rate_vector = []
+    pace_vector = []
+    time_vector = []
+    cadence_vector = []
 
-# haversine distance function
-def haversine(lat1, lon1, lat2, lon2):
-    R = 6371 # earth radius in km
-    phi1, phi2 = math.radians(lat1), math.radians(lat2)
-    d_phi = math.radians(lat2 - lat1)
-    d_lambda = math.radians(lon2 - lon1)
-    a = math.sin(d_phi / 2)**2 + math.cos(phi1) * math.cos(phi2) * math.sin(d_lambda / 2)**2 
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1- a))
-    return R * c
+    prev_time = None
+    prev_distance = None
+    activity_date = None
 
-# distance and time 
-total_distance = 0.0 #km 
-total_time_minutes = (time_vector[-1] - time_vector[0]).total_seconds() / 60.0
+    for tp in x.findall('.//tcx:Trackpoint', ns):
+        # Time
+        time_el = tp.find('tcx:Time', ns)
+        if time_el is not None:
+            current_time = datetime.fromisoformat(time_el.text.replace('Z', '+00:00'))
+            time_vector.append(current_time)
+            if len(time_vector) == 1:
+                activity_date = current_time.date()
+        else:
+            continue  # skip this point if no time
 
-for i in range(1, len(latitude_vector)):
-    total_distance += haversine(
-        latitude_vector[i-1], longitude_vector[i-1],
-        latitude_vector[i], longitude_vector[i]
+        # Position
+        lat_el = tp.find('tcx:Position/tcx:LatitudeDegrees', ns)
+        lon_el = tp.find('tcx:Position/tcx:LongitudeDegrees', ns)
+        lat = float(lat_el.text) if lat_el is not None else None
+        lon = float(lon_el.text) if lon_el is not None else None
+        latitude_vector.append(lat)
+        longitude_vector.append(lon)
+
+        # Distance
+        dist_el = tp.find('tcx:DistanceMeters', ns)
+        dist = float(dist_el.text) if dist_el is not None else None
+        distance_vector.append(dist)
+
+        # HR
+        hr_el = tp.find('tcx:HeartRateBpm/tcx:Value', ns)
+        hr = int(hr_el.text) if hr_el is not None else None
+        heart_rate_vector.append(hr)
+
+        # Cadence
+        cad_el = tp.find('tcx:Cadence', ns)
+        cadence = int(cad_el.text) if cad_el is not None else None
+        cadence_vector.append(cadence)
+
+        # Pace
+        if prev_time is not None and prev_distance is not None and dist is not None:
+            delta_t = (current_time - prev_time).total_seconds() / 60.0
+            delta_d = (dist - prev_distance) / 1000.0
+            pace = delta_t / delta_d if delta_d > 0 else None
+            pace_vector.append(pace)
+        else:
+            pace_vector.append(None)
+
+        prev_time = current_time
+        prev_distance = dist
+
+    # Summary
+    total_distance_km = (distance_vector[-1] if distance_vector[-1] is not None else 0) / 1000
+    hr_values = [hr for hr in heart_rate_vector if hr is not None]
+    avg_hr = np.mean(hr_values) if hr_values else None
+    max_hr = np.max(hr_values) if hr_values else None
+
+    cad_values = [c for c in cadence_vector if c is not None]
+    avg_cad = np.mean(cad_values) * 2 if cad_values else None
+
+    pace_values = [p for p in pace_vector if p is not None and p < 20]
+    avg_pace = np.mean(pace_values) if pace_values else None
+    pace_min = int(avg_pace) if avg_pace else 0
+    pace_sec = int((avg_pace - pace_min) * 60) if avg_pace else 0
+
+    total_time_min = (
+        (time_vector[-1] - time_vector[0]).total_seconds() / 60.0 if time_vector else 0
     )
 
-# pace 
-if total_distance > 0:
-    pace_min_per_km = total_time_minutes / total_distance
-    pace_min = int(pace_min_per_km)
-    pace_sec = int((pace_min_per_km - pace_min) * 60)
-    speed_kmh = total_distance / (total_time_minutes / 60.0)
+    print(f"Extracted data of {activity_date}")
+    print(f"Total distance: {total_distance_km:.2f} km")
+    print(f"Total time: {total_time_min:.1f} min")
+    print(f"Average pace: {pace_min}:{pace_sec:02d} min/km" if avg_pace else "Average pace: N/A")
+    print(f"Average heart rate: {avg_hr:.0f} bpm" if avg_hr else "Heart rate: N/A")
+    print(f"Max hr: {max_hr:.0f} bpm" if max_hr else "Max hr: N/A")
+    print(f"Average cadence: {avg_cad:.0f} spm" if avg_cad else "Cadence: N/A")
 
-    print(f"Date of activity: {date_vector}")
-    print(f"Total distance: {total_distance:.2f} km")
-    print(f"Total time: {total_time_minutes:.1f} minutes")
-    print(f"Pace: {pace_min}:{pace_sec:02d} min/km")
-    print(f"Speed: {speed_kmh:.2f} km/h")
+
+file_extract(tree_1)
+print(" ")
+file_extract(tree_2)
