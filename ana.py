@@ -70,7 +70,7 @@ def file_extract(x):
         prev_distance = dist
 
     # Summary
-    total_distance_km = (distance_vector[-1] if distance_vector[-1] is not None else 0) / 1000
+    total_distance_km = (distance_vector[-1] if distance_vector[-1] is not None else 0) / 1000 
     hr_values = [hr for hr in heart_rate_vector if hr is not None]
     avg_hr = np.mean(hr_values) if hr_values else None
     max_hr = np.max(hr_values) if hr_values else None
