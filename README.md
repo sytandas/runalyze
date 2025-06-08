@@ -4,5 +4,5 @@ Uses .tcx file from (e.g. garmin, coros etc).
 
 ## Todo:
 1. Compare two runs as fitness change metrics.
-2. Evaluate easy, threshold pace from overall data (found out the least amount of data needed to do relatively correctly).
-3. Training load and effect.
+2. Evaluate easy, threshold pace from overall data (finding it relatively correctly from least amount of data will be the goal).
+3. Training load/effect.
