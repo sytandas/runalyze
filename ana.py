@@ -2,6 +2,7 @@ import math
 from datetime import datetime
 import xml.etree.ElementTree as ET
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Load the TCX file
 tree_1 = ET.parse('test_data/8K-7-june-25.tcx').getroot()
@@ -95,11 +96,67 @@ def file_extract(x):
     print(f"Max hr: {max_hr:.0f} bpm" if max_hr else "Max hr: N/A")
     print(f"Average cadence: {avg_cad:.0f} spm" if avg_cad else "Cadence: N/A")
 
+    return {
+        'time': time_vector,
+        'distance': distance_vector,
+        'heart_rate': heart_rate_vector,
+        'pace': pace_vector,
+        'cadence': cadence_vector
+    }
 
 data_1 = file_extract(tree_1)
 print(" ")
 data_2= file_extract(tree_2)
 
 # TODO: Implementation of dynamic time warping (DTW) to compare two runs changing fintess mesures. 
-def dtw(data_1, data_2):
-    return 
+def dtw(s1_og, s2_og):
+    s1 = np.array([x for x in s1_og if x is not None])
+    s2 = np.array([x for x in s2_og if x is not None])
+
+    n, m = len(s1), len(s2)
+    dtw_matrix = np.full((n+1, m+1), np.inf)
+    dtw_matrix[0, 0] = 0
+    path = {}
+
+    for i in range(1, n+1):
+        for j in range(1, m+1):
+            cost = abs(s1[i-1] - s2[j-1])
+            choices = [
+                (dtw_matrix[i-1, j], (i-1, j)),         # insertion
+                (dtw_matrix[i, j-1], (i, j-1)),         # deletion
+                (dtw_matrix[i-1, j-1], (i-1, j-1))      # match
+            ]
+            min_cost, prev = min(choices, key=lambda x: x[0])
+            dtw_matrix[i, j] = cost + min_cost
+            path[(i, j)] = prev
+
+    # reconstruction of path
+    alignment_path = []
+    i, j = m, n
+    while(i, j) in path:
+        alignment_path.append((i-1, j-1)) # adjust for 0-based indexing
+        i, j = path[(i, j)]
+    alignment_path.reverse()
+
+    return dtw_matrix[n, m], alignment_path, s1, s2
+
+# visualization 
+def plot_dtw_alignment(s1_og, s2_og, label='Metric'):
+    distance, path, s1, s2 = dtw(s1_og, s2_og)
+    plt.figure(figsize=(10, 6))
+    plt.plot(s1, label=f'{label} - Run 1', color="red")
+    plt.plot(s2, label=f'{label} - Run 2', color="green")
+
+    for i, j in path[::max(1, len(path) // 100)]:
+        plt.plot([i, j], [s1[i], s2[j],], color='grey', linewidth=0.5, alpha=0.5)
+
+    plt.title(f'DTW alignment on {label} \n DTW distance: {distance: .2f}')
+    plt.legend()
+    plt.xlabel("Time")
+    plt.ylabel(label)
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+# plot for pace, hr, cadence etc  
+plot_dtw_alignment(data_1['cadence'], data_2['cadence'], label="cadence")   
