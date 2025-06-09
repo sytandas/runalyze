@@ -160,3 +160,5 @@ def plot_dtw_alignment(s1_og, s2_og, label='Metric'):
 
 # plot for pace, hr, cadence etc  
 plot_dtw_alignment(data_1['cadence'], data_2['cadence'], label="cadence")   
+
+# TODO: analyzing the ploting how the fitness improved e.g. low hr at same pace, high cadence ~ efficiency.
