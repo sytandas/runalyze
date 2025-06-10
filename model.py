@@ -134,6 +134,9 @@ summary_df['norm_cadence'] = (summary_df['avg_cadence'] - summary_df['avg_cadenc
 # Composite fitness score adjust weight as needed
 summary_df['fitness_score'] = summary_df[['norm_pace', 'norm_hr', 'norm_cadence']].mean(axis=1)
 
+# TODO: Plot need to fixed and data is not alligned correctly
+# TODO: Rolling average and composite fitness score need of research. 
+
 # Plot fitness trend 
 plt.figure(figsize=(10, 5))
 plt.plot(summary_df['date'], summary_df['fitness_score'], marker='o')

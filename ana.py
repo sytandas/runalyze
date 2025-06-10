@@ -161,4 +161,9 @@ def plot_dtw_alignment(s1_og, s2_og, label='Metric'):
 # plot for pace, hr, cadence etc  
 plot_dtw_alignment(data_1['cadence'], data_2['cadence'], label="cadence")   
 
-# TODO: analyzing the ploting how the fitness improved e.g. low hr at same pace, high cadence ~ efficiency.
+# Extract structured metrics from each workout -> model.py
+# Normalize key metrics (pace, HR, etc.) -> model.py
+# Use rolling average or regression for trend detection -> model.py
+# Optionally compute composite fitness score -> model.py
+# TODO: Analyzing the ploting how the fitness improved e.g. low hr at same pace, high cadence ~ efficiency.
+# TODO: Visualize trends and optionally apply DTW for route-based comparison 
