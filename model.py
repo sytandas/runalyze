@@ -124,7 +124,7 @@ summary_df = pd.DataFrame([{
 } for w in workouts if w and w['avg_pace_min_per_km'] and w['avg_hr'] and w['avg_cadence']])
 
 print("Summary DF shape:", summary_df.shape)
-print(summary_df.head())
+print(summary_df)
 
 # Normalize metrics
 summary_df['norm_pace'] = (summary_df['avg_pace'].max() - summary_df['avg_pace']) / (summary_df['avg_pace'].max() - summary_df['avg_pace'].min())
