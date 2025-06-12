@@ -1,4 +1,5 @@
-#🏃 Run analyzing tool.
+##🏃 Run analyzing tool
+
 Analyzing run from heart rate, pace and cadence.
 Uses .tcx file from (e.g. garmin, coros etc).
 
