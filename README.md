@@ -1,22 +1,22 @@
-# 🏃 Run Analyzer
-A Python tool to analyze running data (heart rate, pace, cadence) from `.tcx` files — useful for performance tracking and coaching feedback.
----
-## 📂 Overview
+#🏃 Run analyzing tool.
+Analyzing run from heart rate, pace and cadence.
+Uses .tcx file from (e.g. garmin, coros etc).
 
-- Parses `.tcx` files from GPS devices (e.g. Garmin, COROS).
-- Compares two runs to assess changes in performance.
-- Visualizes time-series metrics like heart rate and pace.
-- Designed to support future coaching logic with LLMs.
-
----
-## ✅ Requirements
-
-- Python 3.x
-- Dependencies:
-  - `numpy`
-  - `matplotlib`
-  - `xml.etree.ElementTree` (built-in)
-
-Install required libraries:
+TCX File Parser and analyzer (ana.py):
+ana.py takes two `.tcx` files as input, parses them and plot cadence, heart rate, pace.
 ```bash
+python ana.py <file1.tcx> <file2.tcx>
+```
+
+Coacing insight (model.py):
+After analyzing attempt to improve on it with AI coaching (todo).
+
+## 📦 install
+```
 pip install numpy matplotlib
+```
+
+## ✅ Todo:
+1. Compare two runs as fitness change metrics.
+2. Evaluate easy, threshold pace from overall data (finding it relatively correctly from least amount of data will be the goal).
+3. Training load/effect - coaching part using LLMs.
