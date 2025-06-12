@@ -108,7 +108,7 @@ data_1 = file_extract(tree_1)
 print(" ")
 data_2= file_extract(tree_2)
 
-# TODO: Implementation of dynamic time warping (DTW) to compare two runs changing fintess mesures. 
+# Implementation of dynamic time warping (DTW) to compare two runs changing fintess mesures. 
 def dtw(s1_og, s2_og):
     s1 = np.array([x for x in s1_og if x is not None])
     s2 = np.array([x for x in s2_og if x is not None])
