@@ -1,3 +1,6 @@
+"""
+Extract data from .tcx and convert it to csv
+"""
 import os
 import xml.etree.ElementTree as ET
 from datetime import datetime
