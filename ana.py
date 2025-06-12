@@ -1,12 +1,21 @@
-import math
+"""
+This is simple analysis of two tcx file. 
+"""
+import math, sys
 from datetime import datetime
 import xml.etree.ElementTree as ET
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Load the TCX file
-tree_1 = ET.parse('test_data/8K-7-june-25.tcx').getroot()
-tree_2 = ET.parse('test_data/8K-27-june-24.tcx').getroot()
+if len(sys.argv) < 3:
+    print("Usage: python test.py <file1.tcx> <file2.tcx>")
+    sys.exit(1)
+
+file1 = sys.argv[1]
+file2 = sys.argv[2]
+tree_1 = ET.parse(file1).getroot()
+tree_2 = ET.parse(file2).getroot()
+
 
 # TCX files use a default namespace
 ns = {'tcx': 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2'}
@@ -88,7 +97,7 @@ def file_extract(x):
         (time_vector[-1] - time_vector[0]).total_seconds() / 60.0 if time_vector else 0
     )
 
-    print(f"Extracted data of {activity_date}")
+    print(f"Date of the activity: {activity_date}")
     print(f"Total distance: {total_distance_km:.2f} km")
     print(f"Total time: {total_time_min:.1f} min")
     print(f"Average pace: {pace_min}:{pace_sec:02d} min/km" if avg_pace else "Average pace: N/A")
@@ -105,10 +114,9 @@ def file_extract(x):
     }
 
 data_1 = file_extract(tree_1)
-print(" ")
 data_2= file_extract(tree_2)
 
-# Implementation of dynamic time warping (DTW) to compare two runs changing fintess mesures.  
+# Implementation of dynamic time warping (DTW) to compare two runs changing fintess measures.  
 def dtw(s1_og, s2_og):
     s1 = np.array([x for x in s1_og if x is not None])
     s2 = np.array([x for x in s2_og if x is not None])
@@ -161,10 +169,5 @@ def plot_dtw_alignment(s1_og, s2_og, label='Metric'):
 # plot for pace, hr, cadence etc  
 plot_dtw_alignment(data_1['cadence'], data_2['cadence'], label="cadence")   
 
-# Extract structured metrics from each workout -> model.py
-# Normalize key metrics (pace, HR, etc.) -> model.py
-# Use rolling average or regression for trend detection -> model.py
-# Optionally compute composite fitness score -> model.py
 # TODO: Analyzing the ploting how the fitness improved e.g. low hr at same pace, high cadence ~ efficiency.
 # TODO: Visualize trends and optionally apply DTW for route-based comparison 
-# easy slow pacing of improvement is better than high intensity
