@@ -1,11 +1,12 @@
 """
-Extract data from .tcx and convert it to csv
+Conversion tcx -> csv.
 """
 import os
 import xml.etree.ElementTree as ET
 from datetime import datetime
 import csv
 import numpy as np
+import pandas as pd
 
 # Namespace
 ns = {'tcx': 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2'}
@@ -132,5 +133,3 @@ with open(output_file, 'w', newline='') as csvfile:
             f"{avg_hr:.0f}" if avg_hr else "",
             f"{avg_cad:.0f}" if avg_cad else ""
         ])
-
-print('Done')

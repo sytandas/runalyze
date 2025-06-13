@@ -1,3 +1,7 @@
+"""
+Parsed files and plot fitness improvement.
+TODO: 1 line comment about two runs.
+"""
 import os
 import math
 from datetime import datetime
@@ -95,8 +99,8 @@ def file_extract(root):
         }
     }
 
-# Loding tcx file
-folder_path = 'coros/'
+# Loding tcx directory
+folder_path = 'coros/' # local directory of tcx files
 tcx_files = [os.path.join(folder_path, f) for f in os.listdir(folder_path) if f.endswith('.tcx')]
 
 workouts = []
@@ -126,6 +130,20 @@ summary_df = pd.DataFrame([{
 print("Summary DF shape:", summary_df.shape)
 print(summary_df)
 
+# TODO: cli output of improvement:: 
+# improvemnt in HR efficiency
+summary_df['pace_per_hr'] = summary_df['avg_pace'] / summary_df['avg_hr']
+x = summary_df['pace_per_hr_diff'] = summary_df['pace_per_hr'].diff()
+print(x)
+
+# Or use correlation to see how HR relates to pace
+y = summary_df[['avg_pace', 'avg_hr']].corr()
+print(y)
+
+# TODO: 1 line ai output from that improvemnt it get:
+
+
+
 # Normalize metrics
 summary_df['norm_pace'] = (summary_df['avg_pace'].max() - summary_df['avg_pace']) / (summary_df['avg_pace'].max() - summary_df['avg_pace'].min())
 summary_df['norm_hr'] = (summary_df['avg_hr'].max() - summary_df['avg_hr']) / (summary_df['avg_hr'].max() - summary_df['avg_hr'].min())
@@ -133,9 +151,6 @@ summary_df['norm_cadence'] = (summary_df['avg_cadence'] - summary_df['avg_cadenc
 
 # Composite fitness score adjust weight as needed
 summary_df['fitness_score'] = summary_df[['norm_pace', 'norm_hr', 'norm_cadence']].mean(axis=1)
-
-# TODO: Plot need to fixed and data is not alligned correctly
-# TODO: Rolling average and composite fitness score need of research. 
 
 # Plot fitness trend 
 plt.figure(figsize=(10, 5))
@@ -145,4 +160,4 @@ plt.xlabel("Date")
 plt.ylabel("Fitness Score")
 plt.grid(True)
 plt.tight_layout()
-plt.show()
+#plt.show()
