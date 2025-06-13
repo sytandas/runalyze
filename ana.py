@@ -8,7 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 if len(sys.argv) < 3:
-    print("Usage: python test.py <file1.tcx> <file2.tcx>")
+    print("Usage: python3 ana.py <file1.tcx> <file2.tcx>")
     sys.exit(1)
 
 file1 = sys.argv[1]
