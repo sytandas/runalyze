@@ -139,7 +139,7 @@ summary_df['norm_cadence'] = (summary_df['avg_cadence'] - summary_df['avg_cadenc
 summary_df['fitness_score'] = summary_df[['norm_pace', 'norm_hr', 'norm_cadence']].mean(axis=1)
 
 
-# improvemnt in HR efficiency
+# improvement in HR efficiency
 summary_df['pace_per_hr'] = summary_df['avg_pace'] / summary_df['avg_hr']
 x = summary_df['pace_per_hr_diff'] = summary_df['pace_per_hr'].diff()
 print(x)
@@ -150,7 +150,7 @@ print(y)
 
 # TODO: cli output of improvement:: 
 
-# TODO: 1 line ai output from that improvemnt it get:
+# TODO: 1 line ai output from that improvement it get:
 
 
 # Plot fitness trend 
