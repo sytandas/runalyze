@@ -173,4 +173,4 @@ plot_dtw_alignment(data_1['heart_rate'], data_2['heart_rate'], label="heart_rate
 plot_dtw_alignment(data_1['pace'], data_2['pace'], label="pace")
 
 # TODO: Analyzing the ploting how the fitness improved e.g. low hr at same pace, high cadence ~ efficiency.
-# TODO: Visualize trends and optionally apply DTW for route-based comparison 
+# TODO: Visualize trends and optionally apply DTW for route-based comparison or finding other algorithm to do. 
