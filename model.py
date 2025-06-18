@@ -100,7 +100,7 @@ def file_extract(root):
     }
 
 # Loding tcx directory
-folder_path = 'coros/' 
+folder_path = 'coros/'  
 tcx_files = [os.path.join(folder_path, f) for f in os.listdir(folder_path) if f.endswith('.tcx')]
 
 workouts = []
