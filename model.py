@@ -139,12 +139,29 @@ summary_df['norm_cadence'] = (summary_df['avg_cadence'] - summary_df['avg_cadenc
 summary_df['fitness_score'] = summary_df[['norm_pace', 'norm_hr', 'norm_cadence']].mean(axis=1)
 
 
-# improvement in HR efficiency
+# Improvement in HR efficiency
 summary_df['pace_per_hr'] = summary_df['avg_pace'] / summary_df['avg_hr']
 x = summary_df['pace_per_hr_diff'] = summary_df['pace_per_hr'].diff()
 print(x)
 
-# Generate AI-style insight from improvement in pace per heart rate (HR efficiency)
+
+# Or use correlation to see how HR relates to pace
+y = summary_df[['avg_pace', 'avg_hr']].corr()
+print(y)
+
+# Cli output of improvement:: 
+print("\nSession-wise HR Efficiency Trend:")
+for i in range(1, len(summary_df)):
+    date = summary_df['date'].iloc[i]
+    diff = summary_df['pace_per_hr_diff'].iloc[i]
+    status = (
+        "↑ Improved" if diff < -0.001 else 
+        "↓ Declined" if diff > 0.001 else 
+        "→ Stable"
+    )
+    print(f"{date}: HR efficiency change {diff:.4f} => {status}")
+
+# Generate one liner AI-style insight from improvement in pace/hr efficiency
 latest_improvement = summary_df['pace_per_hr_diff'].iloc[-1]
 
 if latest_improvement < -0.001:
@@ -155,15 +172,6 @@ else:
     insight = "Heart rate efficiency stable—consistency is key, keep it up!"
 
 print("AI Insight:", insight)
-
-# Or use correlation to see how HR relates to pace
-y = summary_df[['avg_pace', 'avg_hr']].corr()
-print(y)
-
-# TODO: cli output of improvement:: 
-
-# TODO: 1 line ai output from that improvement it get:
-
 
 # Plot fitness trend 
 plt.figure(figsize=(10, 5))
