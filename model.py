@@ -100,7 +100,7 @@ def file_extract(root):
     }
 
 # Loding tcx directory
-folder_path = 'coros/'  
+folder_path = 'coros/' 
 tcx_files = [os.path.join(folder_path, f) for f in os.listdir(folder_path) if f.endswith('.tcx')]
 
 workouts = []
@@ -143,6 +143,18 @@ summary_df['fitness_score'] = summary_df[['norm_pace', 'norm_hr', 'norm_cadence'
 summary_df['pace_per_hr'] = summary_df['avg_pace'] / summary_df['avg_hr']
 x = summary_df['pace_per_hr_diff'] = summary_df['pace_per_hr'].diff()
 print(x)
+
+# Generate AI-style insight from improvement in pace per heart rate (HR efficiency)
+latest_improvement = summary_df['pace_per_hr_diff'].iloc[-1]
+
+if latest_improvement < -0.001:
+    insight = "Heart rate efficiency improved—you're running faster per unit effort. Great progress!"
+elif latest_improvement > 0.001:
+    insight = "Heart rate efficiency slightly declined—consider recovery or checking fatigue."
+else:
+    insight = "Heart rate efficiency stable—consistency is key, keep it up!"
+
+print("AI Insight:", insight)
 
 # Or use correlation to see how HR relates to pace
 y = summary_df[['avg_pace', 'avg_hr']].corr()
