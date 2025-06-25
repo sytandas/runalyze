@@ -1,6 +1,5 @@
 """
-Parsed files and plot fitness improvement.
-TODO: 1 line comment about two runs.
+Parsed files and give one liner, plots, each sessions. 
 """
 import os
 from datetime import datetime
