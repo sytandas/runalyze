@@ -148,6 +148,25 @@ print(x)
 y = summary_df[['avg_pace', 'avg_hr']].corr()
 print(y)
 
+# --- easy / threshold pace from overall data
+clean_df = summary_df.dropna(subset=['avg_hr', 'avg_pace'])
+
+# Estimate heart rate zones using quantiles
+z1_max = clean_df['avg_hr'].quantile(0.6)  # ~Zone 2 upper limit
+z4_min = clean_df['avg_hr'].quantile(0.85)  # ~Threshold zone lower limit
+
+# Classify easy and threshold runs
+easy_runs = clean_df[clean_df['avg_hr'] <= z1_max]
+threshold_runs = clean_df[clean_df['avg_hr'] >= z4_min]
+
+# Compute pace stats
+easy_pace = easy_runs['avg_pace'].mean()
+threshold_pace = threshold_runs['avg_pace'].mean()
+
+print(f"Estimated Easy Pace: {easy_pace:.2f} min/km (HR ≤ {z1_max:.0f} bpm)")
+print(f"Estimated Threshold Pace: {threshold_pace:.2f} min/km (HR ≥ {z4_min:.0f} bpm)")
+# ---
+
 # Cli output of improvement:: 
 print("\nSession-wise HR Efficiency Trend:")
 for i in range(1, len(summary_df)):
