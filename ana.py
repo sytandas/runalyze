@@ -174,3 +174,4 @@ plot_dtw_alignment(data_1['pace'], data_2['pace'], label="pace")
 
 # TODO: Analyzing the ploting how the fitness improved e.g. low hr at same pace, high cadence ~ efficiency.
 # TODO: Visualize trends and optionally apply DTW for route-based comparison or finding other algorithm to do. 
+# TODO: Try to do one line spell from a model
