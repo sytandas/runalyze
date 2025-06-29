@@ -22,4 +22,4 @@ pip install numpy matplotlib
 1. Compare two runs as fitness change metrics. - ✅
 2. Evaluate easy, threshold pace from overall data (finding it relatively correctly from least amount of data will be the goal). - ⚠️ 
 3. Training load/effect - coaching part using LLMs. - ⚠️
-4. Work with light weight llm to spell some coaching output. - ⚠️
+4. Using light weight llm to spell some coaching output. - ⚠️
