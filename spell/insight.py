@@ -1,5 +1,5 @@
 '''
-Experimental phi-2 to spell out some data about runs
+Experimental phi-2 to spell out some words about runs
 '''
 import torch
 import torch.nn as nn
