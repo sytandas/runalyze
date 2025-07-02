@@ -92,3 +92,15 @@ class Phi2Model(nn.Module):
             x = block(x, freqs)
         x = self.norm(x)
         return self.output(x)
+
+
+def main():
+    tokenizer = get_tokenizer()
+    model = Phi2Model().cuda()
+    load_phi2_weights(model)
+    prompt = "Question: What is the capital of India?\nAnswer:"
+    output = generate(model, tokenizer, prompt, max_new_tokens=1)
+    print(output)
+
+if __name__ == "__main__":
+    main()
