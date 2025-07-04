@@ -98,7 +98,7 @@ def main():
     tokenizer = get_tokenizer()
     model = Phi2Model().cuda()
     load_phi2_weights(model)
-    prompt = "Question: What is the capital of India?\nAnswer:"
+    prompt = "Capital of India is "
     output = generate(model, tokenizer, prompt, max_new_tokens=1)
     print(output)
 
