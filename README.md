@@ -7,7 +7,7 @@ TCX File Parser and analyzer (ana.py):
 ana.py takes two `.tcx` files as input, parses them and plot cadence, heart rate, pace.
 
 ```bash
-python ana.py <file1.tcx> <file2.tcx>
+python3 ana.py <file1.tcx> <file2.tcx>
 ```
 
 Coacing insight (model.py):
