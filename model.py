@@ -167,7 +167,7 @@ print(f"Estimated Easy Pace: {easy_pace:.2f} min/km (HR ≤ {z1_max:.0f} bpm)")
 print(f"Estimated Threshold Pace: {threshold_pace:.2f} min/km (HR ≥ {z4_min:.0f} bpm)")
 # ---
 
-# Cli output of improvement:: 
+# CLI output of improvement:: 
 print("\nSession-wise HR Efficiency Trend:")
 for i in range(1, len(summary_df)):
     date = summary_df['date'].iloc[i]
