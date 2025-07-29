@@ -11,13 +11,11 @@ if len(sys.argv) < 3:
     print("Usage: python3 ana.py <file1.tcx> <file2.tcx>")
     sys.exit(1)
 
-file1 = sys.argv[1]
-file2 = sys.argv[2]
-tree_1 = ET.parse(file1).getroot()
-tree_2 = ET.parse(file2).getroot()
+tree_1 = ET.parse(sys.argv[1]).getroot()
+tree_2 = ET.parse(sys.argv[2]).getroot()
 
 
-# TCX files use a default namespace
+# TCX garmin namespace
 ns = {'tcx': 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2'}
 
 def file_extract(x):
@@ -42,7 +40,7 @@ def file_extract(x):
             if len(time_vector) == 1:
                 activity_date = current_time.date()
         else:
-            continue  # skip this point if no time
+            continue  # skip if no time
 
         # Position
         lat_el = tp.find('tcx:Position/tcx:LatitudeDegrees', ns)
@@ -97,13 +95,13 @@ def file_extract(x):
         (time_vector[-1] - time_vector[0]).total_seconds() / 60.0 if time_vector else 0
     )
 
-    print(f"Date of the activity: {activity_date}")
-    print(f"Total distance: {total_distance_km:.2f} km")
-    print(f"Total time: {total_time_min:.1f} min")
-    print(f"Average pace: {pace_min}:{pace_sec:02d} min/km" if avg_pace else "Average pace: N/A")
-    print(f"Average heart rate: {avg_hr:.0f} bpm" if avg_hr else "Heart rate: N/A")
-    print(f"Max hr: {max_hr:.0f} bpm" if max_hr else "Max hr: N/A")
-    print(f"Average cadence: {avg_cad:.0f} spm" if avg_cad else "Cadence: N/A")
+    print(f"Activity Date: {activity_date}")
+    print(f"Distance: {total_distance_km:.2f} km")
+    print(f"Time: {total_time_min:.1f} min")
+    print(f"Average Pace: {pace_min}:{pace_sec:02d} min/km" if avg_pace else "Average pace: N/A")
+    print(f"Average Cadence: {avg_cad:.0f} spm" if avg_cad else "Cadence: N/A")
+    print(f"Average HR: {avg_hr:.0f} bpm" if avg_hr else "Heart rate: N/A")
+    print(f"Max HR: {max_hr:.0f} bpm" if max_hr else "Max hr: N/A")
 
     return {
         'time': time_vector,
@@ -113,9 +111,11 @@ def file_extract(x):
         'cadence': cadence_vector
     }
 
+print("-----------------------------------")
 data_1 = file_extract(tree_1)
-print("")
+print("-----------------------------------")
 data_2= file_extract(tree_2)
+print("-----------------------------------")
 
 # Implementation of dynamic time warping (DTW) to compare two runs changing fintess measures.  
 def dtw(s1_og, s2_og):
@@ -168,9 +168,9 @@ def plot_dtw_alignment(s1_og, s2_og, label='Metric'):
     plt.show()
 
 # plot for pace, hr, cadence etc  
-plot_dtw_alignment(data_1['cadence'], data_2['cadence'], label="cadence")
-plot_dtw_alignment(data_1['heart_rate'], data_2['heart_rate'], label="heart_rate")   
-plot_dtw_alignment(data_1['pace'], data_2['pace'], label="pace")
+# plot_dtw_alignment(data_1['cadence'], data_2['cadence'], label="cadence")
+# plot_dtw_alignment(data_1['heart_rate'], data_2['heart_rate'], label="heart_rate")   
+# plot_dtw_alignment(data_1['pace'], data_2['pace'], label="pace")
 
 # TODO: Analyzing the ploting how the fitness improved e.g. low hr at same pace, high cadence ~ efficiency.
 # TODO: Visualize trends and optionally apply DTW for route-based comparison or finding other algorithm to do. 
