@@ -4,6 +4,7 @@ This is simple analysis of two tcx file.
 import math, sys
 from datetime import datetime
 import xml.etree.ElementTree as ET
+from statistics import mean, variance
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -77,6 +78,8 @@ def file_extract(x):
         prev_time = current_time
         prev_distance = dist
 
+
+
     # Summary
     total_distance_km = (distance_vector[-1] if distance_vector[-1] is not None else 0) / 1000 
     hr_values = [hr for hr in heart_rate_vector if hr is not None]
@@ -111,10 +114,55 @@ def file_extract(x):
         'cadence': cadence_vector
     }
 
+
+def welchs_t_test(sample1, sample2):
+    # Clean samples (remove None)
+    s1 = [x for x in sample1 if x is not None]
+    s2 = [x for x in sample2 if x is not None]
+
+    n1, n2 = len(s1), len(s2)
+    if n1 < 2 or n2 < 2:
+        return None, None, None  # Not enough data
+
+    mean1, mean2 = mean(s1), mean(s2)
+    var1, var2 = variance(s1), variance(s2)
+
+    # Welch's t-statistic
+    numerator = mean1 - mean2
+    denominator = math.sqrt(var1 / n1 + var2 / n2)
+    t_stat = numerator / denominator
+
+    # Degrees of freedom
+    df_numer = (var1 / n1 + var2 / n2) ** 2
+    df_denom = ((var1 / n1) ** 2) / (n1 - 1) + ((var2 / n2) ** 2) / (n2 - 1)
+    df = df_numer / df_denom
+
+    return t_stat, df, abs(numerator)
+
+# General file extraction output
 print("-----------------------------------")
 data_1 = file_extract(tree_1)
 print("-----------------------------------")
 data_2= file_extract(tree_2)
+print("-----------------------------------")
+
+# Perform t-tests
+t_pace, df_pace, diff_pace = welchs_t_test(data_1['pace'], data_2['pace'])
+t_hr, df_hr, diff_hr = welchs_t_test(data_1['heart_rate'], data_2['heart_rate'])
+
+print("-----------------------------------")
+print("Welch's t-test results:")
+if t_pace is not None:
+    print(f"Pace difference: {diff_pace:.2f} min/km, t = {t_pace:.2f}, df = {df_pace:.1f}")
+else:
+    print("Pace data insufficient for t-test.")
+
+print("-----------------------------------")
+if t_hr is not None:
+    print(f"HR difference: {diff_hr:.2f} bpm, t = {t_hr:.2f}, df = {df_hr:.1f}")
+else:
+    print("Heart rate data insufficient for t-test.")
+
 print("-----------------------------------")
 
 # Implementation of dynamic time warping (DTW) to compare two runs changing fintess measures.  
@@ -171,7 +219,3 @@ def plot_dtw_alignment(s1_og, s2_og, label='Metric'):
 # plot_dtw_alignment(data_1['cadence'], data_2['cadence'], label="cadence")
 # plot_dtw_alignment(data_1['heart_rate'], data_2['heart_rate'], label="heart_rate")   
 # plot_dtw_alignment(data_1['pace'], data_2['pace'], label="pace")
-
-# TODO: Analyzing the ploting how the fitness improved e.g. low hr at same pace, high cadence ~ efficiency.
-# TODO: Visualize trends and optionally apply DTW for route-based comparison or finding other algorithm to do. 
-# TODO: One line spell from a model
