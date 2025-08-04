@@ -183,7 +183,7 @@ for i in range(1, len(summary_df)):
 latest_improvement = summary_df['pace_per_hr_diff'].iloc[-1]
 
 if latest_improvement < -0.001:
-    insight = "Heart rate efficiency improved—you're running faster per unit effort. Great progress!"
+    insight = "Heart rate efficiency improved—you're running faster. Great progress!"
 elif latest_improvement > 0.001:
     insight = "Heart rate efficiency slightly declined—consider recovery or checking fatigue."
 else:
