@@ -200,3 +200,4 @@ plt.ylabel("Fitness Score")
 plt.grid(True)
 plt.tight_layout()
 #plt.show()
+# TODO: t-value, p-value
