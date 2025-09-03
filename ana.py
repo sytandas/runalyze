@@ -140,30 +140,24 @@ def welchs_t_test(sample1, sample2):
     return t_stat, df, abs(numerator)
 
 # General file extraction output
-print("-----------------------------------")
 data_1 = file_extract(tree_1)
-print("-----------------------------------")
 data_2= file_extract(tree_2)
-print("-----------------------------------")
 
 # Perform t-tests
 t_pace, df_pace, diff_pace = welchs_t_test(data_1['pace'], data_2['pace'])
 t_hr, df_hr, diff_hr = welchs_t_test(data_1['heart_rate'], data_2['heart_rate'])
 
-print("-----------------------------------")
 print("Welch's t-test results:")
 if t_pace is not None:
     print(f"Pace difference: {diff_pace:.2f} min/km, t = {t_pace:.2f}, df = {df_pace:.1f}")
 else:
     print("Pace data insufficient for t-test.")
 
-print("-----------------------------------")
 if t_hr is not None:
     print(f"HR difference: {diff_hr:.2f} bpm, t = {t_hr:.2f}, df = {df_hr:.1f}")
 else:
     print("Heart rate data insufficient for t-test.")
 
-print("-----------------------------------")
 
 # Implementation of dynamic time warping (DTW) to compare two runs changing fintess measures.  
 def dtw(s1_og, s2_og):
