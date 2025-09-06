@@ -148,7 +148,7 @@ print(x)
 y = summary_df[['avg_pace', 'avg_hr']].corr()
 print(y)
 
-# --- easy / threshold pace from overall data
+# Easy / Threshold pace from overall data
 clean_df = summary_df.dropna(subset=['avg_hr', 'avg_pace'])
 
 # Estimate heart rate zones using quantiles
@@ -200,4 +200,6 @@ plt.ylabel("Fitness Score")
 plt.grid(True)
 plt.tight_layout()
 #plt.show()
+
 # TODO: t-value, p-value
+
