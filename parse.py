@@ -71,7 +71,6 @@ with open(output_file, 'w', newline='') as csvfile:
             # Skip if time or distance did not increase - new correction 
             if prev_time is not None and current_time <= prev_time:
                 continue
-            # end
             if prev_time is not None and prev_distance is not None and dist is not None:
                 delta_t = (current_time - prev_time).total_seconds() / 60.0
                 delta_d = (dist - prev_distance) / 1000.0
@@ -84,15 +83,13 @@ with open(output_file, 'w', newline='') as csvfile:
             # new correction 
             if prev_distance is not None and dist is not None and dist <= prev_distance:
                 continue
-            # end 
             prev_distance = dist
 
         if not time_vector or not distance_vector:
             continue
 
-        # sanity check if works - start 
+        # sanity check start 
         delta_t = (current_time - prev_time).total_seconds()
-        # delta_d = (dist - prev_distance)
         if dist is not None and prev_distance is not None:
             delta_d = dist - prev_distance
         else:
@@ -105,7 +102,7 @@ with open(output_file, 'w', newline='') as csvfile:
         else:
             pace = (delta_t / 60.0) / (delta_d / 1000.0)
             pace_vector.append(pace)
-        # sanity check if works - end 
+        # sanity check end 
         
         total_distance_km = (distance_vector[-1] if distance_vector[-1] else 0) / 1000
         total_time_min = (time_vector[-1] - time_vector[0]).total_seconds() / 60.0
@@ -117,10 +114,8 @@ with open(output_file, 'w', newline='') as csvfile:
         avg_hr = np.mean(clean_hr) if clean_hr else None
         avg_cad = np.mean(clean_cad) if clean_cad else None
         # avg_pace = np.mean(pace_vector) if pace_vector else None
-        # new - start 
         cleaned_pace_vector = [p for p in pace_vector if p is not None]
         avg_pace = np.mean(cleaned_pace_vector) if cleaned_pace_vector else None
-        # new - end 
         activity_date = time_vector[0].date() 
 
         writer.writerow([
