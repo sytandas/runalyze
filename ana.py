@@ -97,7 +97,7 @@ def file_extract(x):
     total_time_min = (
         (time_vector[-1] - time_vector[0]).total_seconds() / 60.0 if time_vector else 0
     )
-
+    print('****************')
     print(f"Activity Date: {activity_date}")
     print(f"Distance: {total_distance_km:.2f} km")
     print(f"Time: {total_time_min:.1f} min")
@@ -105,7 +105,6 @@ def file_extract(x):
     print(f"Average Cadence: {avg_cad:.0f} spm" if avg_cad else "Cadence: N/A")
     print(f"Average HR: {avg_hr:.0f} bpm" if avg_hr else "Heart rate: N/A")
     print(f"Max HR: {max_hr:.0f} bpm" if max_hr else "Max hr: N/A")
-
     return {
         'time': time_vector,
         'distance': distance_vector,
@@ -147,6 +146,7 @@ data_2= file_extract(tree_2)
 t_pace, df_pace, diff_pace = welchs_t_test(data_1['pace'], data_2['pace'])
 t_hr, df_hr, diff_hr = welchs_t_test(data_1['heart_rate'], data_2['heart_rate'])
 
+print('****************')
 print("Welch's t-test results:")
 if t_pace is not None:
     print(f"Pace difference: {diff_pace:.2f} min/km, t = {t_pace:.2f}, df = {df_pace:.1f}")
