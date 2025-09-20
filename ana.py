@@ -147,6 +147,7 @@ t_pace, df_pace, diff_pace = welchs_t_test(data_1['pace'], data_2['pace'])
 t_hr, df_hr, diff_hr = welchs_t_test(data_1['heart_rate'], data_2['heart_rate'])
 
 print('****************')
+
 print("Welch's t-test results:")
 if t_pace is not None:
     print(f"Pace difference: {diff_pace:.2f} min/km, t = {t_pace:.2f}, df = {df_pace:.1f}")
