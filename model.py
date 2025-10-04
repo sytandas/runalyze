@@ -183,11 +183,11 @@ for i in range(1, len(summary_df)):
 latest_improvement = summary_df['pace_per_hr_diff'].iloc[-1]
 
 if latest_improvement < -0.001:
-    insight = "Heart rate efficiency improved—you're running faster. Great progress!"
+    insight = "Heart rate efficiency improved. Great progress!"
 elif latest_improvement > 0.001:
     insight = "Heart rate efficiency slightly declined—consider recovery or checking fatigue."
 else:
-    insight = "Heart rate efficiency stable—consistency is key, keep it up!"
+    insight = "Heart rate efficiency stable."
 
 print("AI Insight:", insight)
 
@@ -199,7 +199,6 @@ plt.xlabel("Date")
 plt.ylabel("Fitness Score")
 plt.grid(True)
 plt.tight_layout()
-#plt.show()
+plt.show()
 
 # TODO: t-value, p-value
-

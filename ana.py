@@ -15,7 +15,6 @@ if len(sys.argv) < 3:
 tree_1 = ET.parse(sys.argv[1]).getroot()
 tree_2 = ET.parse(sys.argv[2]).getroot()
 
-
 # TCX garmin namespace
 ns = {'tcx': 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2'}
 
@@ -78,8 +77,6 @@ def file_extract(x):
         prev_time = current_time
         prev_distance = dist
 
-
-
     # Summary
     total_distance_km = (distance_vector[-1] if distance_vector[-1] is not None else 0) / 1000 
     hr_values = [hr for hr in heart_rate_vector if hr is not None]
@@ -113,7 +110,6 @@ def file_extract(x):
         'cadence': cadence_vector
     }
 
-
 def welchs_t_test(sample1, sample2):
     # Clean samples (remove None)
     s1 = [x for x in sample1 if x is not None]
@@ -133,7 +129,7 @@ def welchs_t_test(sample1, sample2):
 
     # Degrees of freedom
     df_numer = (var1 / n1 + var2 / n2) ** 2
-    df_denom = ((var1 / n1) ** 2) / (n1 - 1) + ((var2 / n2) ** 2) / (n2 - 1)
+    df_denom = ((var2 / n1) ** 2) / (n1 - 1) + ((var2 / n2) ** 2) / (n2 - 1)
     df = df_numer / df_denom
 
     return t_stat, df, abs(numerator)
@@ -211,8 +207,7 @@ def plot_dtw_alignment(s1_og, s2_og, label='Metric'):
     plt.show()
 
 # plot for pace, hr, cadence  
-# plot_dtw_alignment(data_1['cadence'], data_2['cadence'], label="cadence")
-# plot_dtw_alignment(data_1['heart_rate'], data_2['heart_rate'], label="heart_rate")   
-# plot_dtw_alignment(data_1['pace'], data_2['pace'], label="pace")
+#plot_dtw_alignment(data_1['cadence'], data_2['cadence'], label="cadence")
+#plot_dtw_alignment(data_1['heart_rate'], data_2['heart_rate'], label="heart_rate")   
+#plot_dtw_alignment(data_1['pace'], data_2['pace'], label="pace")
 # welch's t-test rectificationly implement with practical outcome
-# TODO: More statistical view to compare.
