@@ -201,4 +201,13 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 
-# TODO: t-value, p-value
+# t-value, p-value
+from scipy import stats
+
+x = summary_df['avg_hr']
+y = summary_df['avg_pace']
+
+r, p = stats.pearsonr(x, y)
+print(f"Correlation between HR and pace: r={r:.3f}, p={p:.3f}")
+
+#TODO: without using scipy
