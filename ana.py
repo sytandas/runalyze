@@ -210,4 +210,4 @@ def plot_dtw_alignment(s1_og, s2_og, label='Metric'):
 #plot_dtw_alignment(data_1['cadence'], data_2['cadence'], label="cadence")
 #plot_dtw_alignment(data_1['heart_rate'], data_2['heart_rate'], label="heart_rate")   
 #plot_dtw_alignment(data_1['pace'], data_2['pace'], label="pace")
-# welch's t-test rectificationly implement with practical outcome
+# welch's t-test with practical outcome
