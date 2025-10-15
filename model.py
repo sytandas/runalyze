@@ -210,4 +210,4 @@ y = summary_df['avg_pace']
 r, p = stats.pearsonr(x, y)
 print(f"Correlation between HR and pace: r={r:.3f}, p={p:.3f}")
 
-#TODO: without using scipy
+#TODO: remove scipy
