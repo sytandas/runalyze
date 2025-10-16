@@ -1,4 +1,46 @@
 <!DOCTYPE html>
 <html>
-    
+<head>
+  <meta charset="UTF-8">
+  <title>Model Runner</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 50px; }
+    .container { max-width: 600px; margin: auto; }
+    #result { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Run Model on File</h2>
+    <form id="uploadForm">
+      <input type="file" id="fileInput" name="file" webkitdirectory directory>
+      <br><br>
+      <button type="submit">Upload & Run</button>
+    </form>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files[0];
+      if (!file) {
+        alert("Please select a file or folder.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/upload', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await response.json();
+      document.getElementById('result').innerText = data.result || data.error;
+    });
+  </script>
+</body>
 </html>
