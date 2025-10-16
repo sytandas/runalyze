@@ -3,6 +3,7 @@ Parsed files and give one liner, plots, each sessions.
 """
 import os
 from datetime import datetime
+from math import erf, sqrt 
 import xml.etree.ElementTree as ET
 import numpy as np
 import pandas as pd
@@ -182,7 +183,7 @@ for i in range(1, len(summary_df)):
 # Generate one liner AI-style insight from improvement in pace/hr efficiency
 latest_improvement = summary_df['pace_per_hr_diff'].iloc[-1]
 
-if latest_improvement < -0.001:
+if latest_improvement < -0.001
     insight = "Heart rate efficiency improved. Great progress!"
 elif latest_improvement > 0.001:
     insight = "Heart rate efficiency slightly declined—consider recovery or checking fatigue."
@@ -201,13 +202,17 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 
-# t-value, p-value
-from scipy import stats
+x = summary_df['avg_hr'].to_numpy()
+y = summary_df['avg_pace'].to_numpy()
 
-x = summary_df['avg_hr']
-y = summary_df['avg_pace']
+# Pearson correlation coefficient
+r = np.corrcoef(x, y)[0, 1]
 
-r, p = stats.pearsonr(x, y)
-print(f"Correlation between HR and pace: r={r:.3f}, p={p:.3f}")
+# Compute p-value using t-distribution approximation
+n = len(x)
+t_stat = r * np.sqrt((n - 2) / (1 - r**2))
 
-#TODO: remove scipy
+# Two-tailed p-value
+p = 2 * (1 - 0.5 * (1 + erf(abs(t_stat) / sqrt(2))))
+
+print(f"Correlation between HR and pace: r={r:.3f}, p≈{p:.3f}")
