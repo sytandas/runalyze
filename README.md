@@ -24,4 +24,4 @@ pip install numpy matplotlib
 3. Training load/effect - coaching part using LLMs. - ⚠️
 4. Using light weight llm to spell coaching output. - ✅
 5. Finding difference between two points and improvement metrix. - ⚠️
-6. Prediction of time. - ⚠️
+6. Prediction of time. - ✅
