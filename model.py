@@ -99,7 +99,7 @@ def file_extract(root):
         }
     }
 
-# Loding tcx directory
+# tcx directory
 folder_path = 'coros/' 
 tcx_files = [os.path.join(folder_path, f) for f in os.listdir(folder_path) if f.endswith('.tcx')]
 
@@ -116,7 +116,7 @@ for f in sorted(tcx_files):  # sort for time consistency
     except Exception as e:
         print(f"Error in {f}: {e}")
 
-# Build DataFrame
+#  Main DataFrame
 summary_df = pd.DataFrame([{
     'date': w['activity_date'],
     'distance_km': w['total_distance_km'],
@@ -130,12 +130,12 @@ summary_df = pd.DataFrame([{
 print("Summary DF shape:", summary_df.shape)
 print(summary_df)
 
-# Normalize metrics
+# Normalization 
 summary_df['norm_pace'] = (summary_df['avg_pace'].max() - summary_df['avg_pace']) / (summary_df['avg_pace'].max() - summary_df['avg_pace'].min())
 summary_df['norm_hr'] = (summary_df['avg_hr'].max() - summary_df['avg_hr']) / (summary_df['avg_hr'].max() - summary_df['avg_hr'].min())
 summary_df['norm_cadence'] = (summary_df['avg_cadence'] - summary_df['avg_cadence'].min()) / (summary_df['avg_cadence'].max() - summary_df['avg_cadence'].min())
 
-# Composite fitness score adjust weight as needed
+# Composite fitness score adjust weight
 summary_df['fitness_score'] = summary_df[['norm_pace', 'norm_hr', 'norm_cadence']].mean(axis=1)
 
 
@@ -145,14 +145,14 @@ x = summary_df['pace_per_hr_diff'] = summary_df['pace_per_hr'].diff()
 print(x)
 
 
-# Or use correlation to see how HR relates to pace
+# Correlation to see how HR relates to pace
 y = summary_df[['avg_pace', 'avg_hr']].corr()
 print(y)
 
 # Easy / Threshold pace from overall data
 clean_df = summary_df.dropna(subset=['avg_hr', 'avg_pace'])
 
-# Estimate heart rate zones using quantiles
+# Estimate HR zones using quantiles
 z1_max = clean_df['avg_hr'].quantile(0.6)  # ~Zone 2 upper limit
 z4_min = clean_df['avg_hr'].quantile(0.85)  # ~Threshold zone lower limit
 
@@ -166,9 +166,8 @@ threshold_pace = threshold_runs['avg_pace'].mean()
 
 print(f"Estimated Easy Pace: {easy_pace:.2f} min/km (HR ≤ {z1_max:.0f} bpm)")
 print(f"Estimated Threshold Pace: {threshold_pace:.2f} min/km (HR ≥ {z4_min:.0f} bpm)")
-# ---
 
-# CLI output of improvement:: 
+# Improvement marker
 print("\nSession-wise HR Efficiency Trend:")
 for i in range(1, len(summary_df)):
     date = summary_df['date'].iloc[i]
@@ -180,7 +179,7 @@ for i in range(1, len(summary_df)):
     )
     print(f"{date}: HR efficiency change {diff:.4f} => {status}")
 
-# Generate one liner AI-style insight from improvement in pace/hr efficiency
+# Generate one liner AI-style insight from improvement in pace/HR efficiency
 latest_improvement = summary_df['pace_per_hr_diff'].iloc[-1]
 
 if latest_improvement < -0.001
