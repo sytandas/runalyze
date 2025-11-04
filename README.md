@@ -15,7 +15,7 @@ After analyzing attempt to improve on it with AI coaching (todo).
 
 ## 📦 install
 ```
-pip install numpy matplotlib torch
+pip install numpy matplotlib
 ```
 
 ## ✅ Todo:
