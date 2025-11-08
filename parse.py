@@ -95,7 +95,6 @@ with open(output_file, 'w', newline='') as csvfile:
         else:
             delta_d = None  # or some default, like 0, depending on your use case
 
-
         # Skip large gaps or zero movement
         if delta_t <= 0 or delta_d <= 0 or delta_t > 120 or delta_d > 500:
             pace_vector.append(None)
@@ -106,6 +105,7 @@ with open(output_file, 'w', newline='') as csvfile:
         
         total_distance_km = (distance_vector[-1] if distance_vector[-1] else 0) / 1000
         total_time_min = (time_vector[-1] - time_vector[0]).total_seconds() / 60.0
+
         # Cleaned lists (excluding None)
         clean_hr = [h for h in heart_rate_vector if h is not None]
         clean_cad = [c for c in cadence_vector if c is not None]
@@ -117,7 +117,6 @@ with open(output_file, 'w', newline='') as csvfile:
         cleaned_pace_vector = [p for p in pace_vector if p is not None]
         avg_pace = np.mean(cleaned_pace_vector) if cleaned_pace_vector else None
         activity_date = time_vector[0].date() 
-
         writer.writerow([
             filename,
             activity_date.isoformat(),
