@@ -126,7 +126,6 @@ summary_df = pd.DataFrame([{
     'max_hr': w['max_hr'],
     'avg_cadence': w['avg_cadence']
 } for w in workouts if w and w['avg_pace_min_per_km'] and w['avg_hr'] and w['avg_cadence']])
-
 print("Summary DF shape:", summary_df.shape)
 print(summary_df)
 
@@ -182,7 +181,7 @@ for i in range(1, len(summary_df)):
 # Generate one liner AI-style insight from improvement in pace/HR efficiency
 latest_improvement = summary_df['pace_per_hr_diff'].iloc[-1]
 
-if latest_improvement < -0.001
+if latest_improvement < -0.001:
     insight = "Heart rate efficiency improved. Great progress!"
 elif latest_improvement > 0.001:
     insight = "Heart rate efficiency slightly declined—consider recovery or checking fatigue."
