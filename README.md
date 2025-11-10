@@ -25,3 +25,4 @@ pip install numpy matplotlib
 4. Using light weight llm to spell coaching output. - ✅
 5. Finding difference between two points and improvement metrix. - ✅
 6. Prediction of time. - ✅
+Update: Nov 2025
