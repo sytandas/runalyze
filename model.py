@@ -137,12 +137,10 @@ summary_df['norm_cadence'] = (summary_df['avg_cadence'] - summary_df['avg_cadenc
 # Composite fitness score adjust weight
 summary_df['fitness_score'] = summary_df[['norm_pace', 'norm_hr', 'norm_cadence']].mean(axis=1)
 
-
 # Improvement in HR efficiency
 summary_df['pace_per_hr'] = summary_df['avg_pace'] / summary_df['avg_hr']
 x = summary_df['pace_per_hr_diff'] = summary_df['pace_per_hr'].diff()
 print(x)
-
 
 # Correlation to see how HR relates to pace
 y = summary_df[['avg_pace', 'avg_hr']].corr()
