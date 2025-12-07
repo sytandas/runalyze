@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Run model.py Locally</title>
+  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+  <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+  <style>
+    body { font-family: sans-serif; margin: 40px; }
+    input, button { margin-top: 10px; }
+    #result { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Run model.py (server less)</h2>
+  <input type="file" id="fileInput" />
+  <button id="runBtn">Run Model</button>
+
+  <div id="result"></div>
+
+  <py-script>
+    import os
+    from pyodide.ffi import to_js
+
+    def process_file(path):
+        # Mimic your model.py
+        size = os.path.getsize(path)
+        return f"Processed '{os.path.basename(path)}' — {size} bytes"
+
+    def run_model(event=None):
+        import js
+        file_input = js.document.getElementById("fileInput")
+        result_div = js.document.getElementById("result")
+
+        if not file_input.files.length:
+            result_div.innerText = "Please select a file first."
+            return
+
+        file = file_input.files[0]
+        filename = file.name
+        data = file.arrayBuffer().to_py()
+        with open(filename, "wb") as f:
+            f.write(bytes(data))
+        
+        result = process_file(filename)
+        result_div.innerText = result
+
+    js.document.getElementById("runBtn").addEventListener("click", to_js(run_model))
+  </py-script>
+</body>
+</html>
