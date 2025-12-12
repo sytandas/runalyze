@@ -185,7 +185,6 @@ def dtw(s1_og, s2_og):
         alignment_path.append((i-1, j-1)) # adjust for 0-based indexing
         i, j = path[(i, j)]
     alignment_path.reverse()
-
     return dtw_matrix[n, m], alignment_path, s1, s2
 
 # visualization 
