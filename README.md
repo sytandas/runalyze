@@ -18,9 +18,5 @@ pip install numpy matplotlib
 ```
 
 ## ✅ Todo:
-1. Compare two runs as fitness change metrics. - ✅
-2. Evaluate easy, threshold pace from overall data (finding it relatively correctly from least amount of data will be the goal). - ⚠️ 
-3. Training load/effect - coaching part using LLMs. - ⚠️
-4. Using light weight llm to spell coaching output. - ✅
-5. Finding difference between two points and improvement metrix. - ✅
-6. Prediction of time. - ✅
+1. Load balancing
+2. Dew point effect on pace
