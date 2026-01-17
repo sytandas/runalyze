@@ -26,14 +26,12 @@ with open(output_file, 'w', newline='') as csvfile:
     for filename in os.listdir(input_dir):
         if not filename.endswith('.tcx'):
             continue
-
         filepath = os.path.join(input_dir, filename)
         try:
             tree = ET.parse(filepath)
         except Exception as e:
             print(f"Failed to parse {filename}: {e}")
             continue
-
         root = tree.getroot()
 
         # Extract sport type from the first <Activity>
