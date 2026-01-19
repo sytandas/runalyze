@@ -18,5 +18,5 @@ pip install numpy matplotlib
 ```
 
 ## ✅ Todo:
-1. Load balancing
-2. Dew point effect on pace
+1. Load balancing the training.
+2. Dew point effect on pace.
