@@ -13,16 +13,17 @@ from statistics import mean, variance
 import numpy as np
 import matplotlib.pyplot as plt
 
-if len(sys.argv) < 3:
-    print("Usage: python3 ana.py <file1.tcx> <file2.tcx>")
-    sys.exit(1)
-
-tree_1 = ET.parse(sys.argv[1]).getroot()
-tree_2 = ET.parse(sys.argv[2]).getroot()
-
+# i/o
+input_dir = 'coros'  # directory with TCX files
+input_file = 'training_summary.csv'
 
 # add ActivityExtension namespace
 ns = {
     'tcx': 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2',
     'ae':  'http://www.garmin.com/xmlschemas/ActivityExtension/v2'
 }
+
+# sort out weekly load first (mon-sun) each week from data availability
+# now the fun part is i will set the approach or coaching method to gauge the load  **
+# from parse file -> summery it should easy #TODO
+# so playing with csv or tcx if not
