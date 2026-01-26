@@ -26,4 +26,3 @@ ns = {
 # sort out weekly load first (mon-sun) each week from data availability
 # now the fun part is i will set the approach or coaching method to gauge the load  **
 # from parse file -> summery it should easy #TODO
-# so playing with csv or tcx if not
