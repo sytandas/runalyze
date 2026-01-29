@@ -2,7 +2,7 @@
 Central Idea: 
 Load balance using HR each week.
 Primarily Idea came from Banister Impulse-Response Model.
-Training Load -> Fitness - Fatigue = Performance
+Training Load -> Fitness - Fatigue = Performance.
 How close become the breakthrough line graphically. 
 """
 
@@ -23,6 +23,8 @@ ns = {
     'ae':  'http://www.garmin.com/xmlschemas/ActivityExtension/v2'
 }
 
-# sort out weekly load first (mon-sun) each week from data availability
-# now the fun part is i will set the approach or coaching method to gauge the load  **
-# from parse file -> summery it should easy #TODO
+#TODO: 
+# mon-sun old date: each week load.
+# now the fun part is i will set the approach or coaching method to gauge the load  **.
+# from parse file -> summery it should easy.
+# Making load graph, from begining and past data.  
