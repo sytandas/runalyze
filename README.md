@@ -20,4 +20,3 @@ pip install numpy matplotlib
 ## ✅ Todo:
 1. Load balancing the training; reference from HR intensity.
 2. Dew point effect on pace.
-Update: 29th Jan 2026
